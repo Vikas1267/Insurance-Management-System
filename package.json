@@ -1,0 +1,10 @@
+{
+  "name": "insurance-management-system",
+  "version": "1.0.0",
+  "description": "Insurance Management System - Full-Stack Policy & Claims Administration Portal",
+  "scripts": {
+    "start": "python run.py"
+  },
+  "author": "Omvikas Indla",
+  "license": "MIT"
+}

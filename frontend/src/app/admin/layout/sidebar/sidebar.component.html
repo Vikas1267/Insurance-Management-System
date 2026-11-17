@@ -1,0 +1,66 @@
+<perfect-scrollbar>
+  <div class="sidebar-left" fxLayout="column">
+    <div class="branding mat-brand-bg mat-elevation-z1">
+      <div class="p-1">
+        <div class="font--20 mb-0" style="font-weight: 700; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px;">
+          <mat-icon style="font-size: 24px;">shield</mat-icon> Insurance Portal
+        </div>
+        <div class="user mb-12" fxLayout="row" fxLayoutAlign="start center">
+          <div>
+            <div style="font-size: 11px; opacity: 0.85; margin-top: 4px;">Policy Administration Portal</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <mat-nav-list (click)="hideSubmenu($event)">
+      <div class="menu__list mb-1">
+
+        <mat-list-item class="menu__item">
+          <a fxLayout="row" fxLayoutAlign="start center" routerLink="dashboard" style="display: flex; width: 100%; text-decoration: none; color: inherit;">
+            <mat-icon>dashboard</mat-icon>
+            <span style="margin-left: 12px; font-weight: 500;">Executive Dashboard</span>
+          </a>
+        </mat-list-item>
+
+        <mat-list-item class="menu__item" sidenavAccordian>
+          <a fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon>security</mat-icon>
+            <span style="margin-left: 12px; font-weight: 500;">Policy Portfolio</span>
+            <span fxFlex></span>
+            <mat-icon class="menu-caret">keyboard_arrow_down</mat-icon>
+          </a>
+          <mat-nav-list class="menu__submenu">
+            <mat-list-item>
+              <a fxLayout="row" routerLink="policy">
+                <mat-icon style="font-size: 16px; margin-right: 8px;">list</mat-icon>
+                <span>Policy Records</span>
+              </a>
+            </mat-list-item>
+          </mat-nav-list>
+        </mat-list-item>
+
+        <mat-list-item class="menu__item">
+          <a fxLayout="row" fxLayoutAlign="start center" routerLink="calculator" style="display: flex; width: 100%; text-decoration: none; color: inherit;">
+            <mat-icon>calculate</mat-icon>
+            <span style="margin-left: 12px; font-weight: 500;">Premium Calculator</span>
+          </a>
+        </mat-list-item>
+
+        <mat-list-item class="menu__item">
+          <a fxLayout="row" fxLayoutAlign="start center" routerLink="claims" style="display: flex; width: 100%; text-decoration: none; color: inherit;">
+            <mat-icon>gavel</mat-icon>
+            <span style="margin-left: 12px; font-weight: 500;">Claims Workflow</span>
+          </a>
+        </mat-list-item>
+
+        <mat-list-item class="menu__item">
+          <a fxLayout="row" fxLayoutAlign="start center" routerLink="user" style="display: flex; width: 100%; text-decoration: none; color: inherit;">
+            <mat-icon>people</mat-icon>
+            <span style="margin-left: 12px; font-weight: 500;">User Accounts</span>
+          </a>
+        </mat-list-item>
+
+      </div>
+    </mat-nav-list>
+  </div>
+</perfect-scrollbar>

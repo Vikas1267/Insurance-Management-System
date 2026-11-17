@@ -1,0 +1,564 @@
+<div class="dashboard-wrapper" fxLayout="column" fxLayoutGap="20px">
+
+  <div class="view-switcher-bar" fxLayout="row" fxLayoutAlign="space-between center">
+    <div fxLayout="row" fxLayoutGap="8px">
+      <button mat-button class="view-pill" [ngClass]="{'active': currentView === 'overview'}" (click)="switchView('overview')">
+        <mat-icon>dashboard</mat-icon>
+        <span>Executive Overview</span>
+      </button>
+      <button mat-button class="view-pill" [ngClass]="{'active': currentView === 'calculator'}" (click)="switchView('calculator')">
+        <mat-icon>calculate</mat-icon>
+        <span>Premium Calculator Studio</span>
+      </button>
+      <button mat-button class="view-pill" [ngClass]="{'active': currentView === 'claims'}" (click)="switchView('claims')">
+        <mat-icon>gavel</mat-icon>
+        <span>Claims Workflow Center</span>
+      </button>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="10px">
+      <button mat-raised-button color="accent" (click)="downloadCsv()">
+        <mat-icon>file_download</mat-icon> Audit CSV
+      </button>
+      <button mat-raised-button class="btn-primary-custom" (click)="navigateToPolicies()">
+        <mat-icon>add_circle</mat-icon> New Policy
+      </button>
+    </div>
+  </div>
+
+  <ng-container *ngIf="currentView === 'overview'">
+
+    <mat-card class="hero-card">
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutGap="15px">
+        <div>
+          <div class="hero-tag">
+            <mat-icon class="pulse-icon">fiber_manual_record</mat-icon>
+            <span>CORE UNDERWRITING ENGINE • ACTIVE</span>
+          </div>
+          <h1 class="hero-title">Policy Administration & Actuarial Command Center</h1>
+          <p class="hero-subtitle">
+            Welcome, <strong>{{ adminName }}</strong>. Real-time portfolio monitoring, actuarial risk computation, and claims lifecycle adjudication.
+          </p>
+        </div>
+        <div class="hero-actions" fxLayout="row" fxLayoutGap="10px">
+          <button mat-icon-button (click)="loadDashboardData()" matTooltip="Refresh Live Portfolio Data">
+            <mat-icon>refresh</mat-icon>
+          </button>
+        </div>
+      </div>
+    </mat-card>
+
+    <div fxLayout="row wrap" fxLayoutGap="16px grid">
+      <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50">
+        <mat-card class="metric-card metric-blue">
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+            <div>
+              <div class="metric-label">TOTAL POLICIES</div>
+              <div class="metric-value">{{ metrics.totalPolicies }}</div>
+              <div class="metric-footer">
+                <span class="trend-badge positive">+14.2%</span>
+                <span class="subtext">{{ metrics.activePolicies }} In-Force Active</span>
+              </div>
+            </div>
+            <div class="metric-icon-box bg-blue">
+              <mat-icon>verified_user</mat-icon>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+
+      <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50">
+        <mat-card class="metric-card metric-green">
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+            <div>
+              <div class="metric-label">PORTFOLIO SUM ASSURED</div>
+              <div class="metric-value">₹ {{ (metrics.totalSumAssured / 100000).toFixed(1) }}L</div>
+              <div class="metric-footer">
+                <span class="trend-badge positive">IRDAI Reserve</span>
+                <span class="subtext">Solvency Ratio 2.1x</span>
+              </div>
+            </div>
+            <div class="metric-icon-box bg-green">
+              <mat-icon>account_balance</mat-icon>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+
+      <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50">
+        <mat-card class="metric-card metric-purple">
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+            <div>
+              <div class="metric-label">GROSS PREMIUM INFLOW</div>
+              <div class="metric-value">₹ {{ (metrics.totalPremiumVolume / 1000).toFixed(1) }}k</div>
+              <div class="metric-footer">
+                <span class="trend-badge positive">Audited</span>
+                <span class="subtext">Annual Collections</span>
+              </div>
+            </div>
+            <div class="metric-icon-box bg-purple">
+              <mat-icon>monetization_on</mat-icon>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+
+      <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50">
+        <mat-card class="metric-card metric-orange">
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+            <div>
+              <div class="metric-label">SETTLEMENT RATIO</div>
+              <div class="metric-value">{{ metrics.settlementRate }}</div>
+              <div class="metric-footer">
+                <span class="trend-badge warning">{{ metrics.pendingClaims }} in Review</span>
+                <span class="subtext">{{ metrics.settledClaims }} Settled</span>
+              </div>
+            </div>
+            <div class="metric-icon-box bg-orange">
+              <mat-icon>assignment_turned_in</mat-icon>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+
+    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+
+      <div fxFlex="50" fxFlex.lt-md="100">
+        <mat-card class="tool-card h-100">
+          <div class="card-header-bar" fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+              <div class="tool-icon bg-blue"><mat-icon>calculate</mat-icon></div>
+              <div>
+                <h2 class="card-heading">Actuarial Premium Calculator</h2>
+                <p class="card-subheading">Risk-adjusted financial computation based on mortality tables</p>
+              </div>
+            </div>
+            <button mat-icon-button (click)="switchView('calculator')" matTooltip="Open Full Calculator Studio">
+              <mat-icon>open_in_new</mat-icon>
+            </button>
+          </div>
+
+          <mat-card-content class="calc-content">
+            <div fxLayout="column" fxLayoutGap="14px">
+              <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="15px">
+                <div fxFlex="40">
+                  <mat-form-field class="w-100">
+                    <mat-placeholder>Age (Years)</mat-placeholder>
+                    <input matInput type="number" [(ngModel)]="calcAge" min="18" max="75" (change)="calculateQuote()">
+                  </mat-form-field>
+                </div>
+                <div fxFlex="60">
+                  <mat-form-field class="w-100">
+                    <mat-placeholder>Plan / Coverage</mat-placeholder>
+                    <mat-select [(ngModel)]="calcCoverageType" (change)="calculateQuote()">
+                      <mat-option value="TERM_LIFE">Pure Term Life Protection</mat-option>
+                      <mat-option value="WHOLE_LIFE">Whole Life Comprehensive</mat-option>
+                      <mat-option value="ENDOWMENT">Endowment Savings Plan</mat-option>
+                      <mat-option value="CRITICAL_ILLNESS">Term Life + Critical Illness</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="15px">
+                <div fxFlex="50">
+                  <mat-form-field class="w-100">
+                    <mat-placeholder>Sum Assured</mat-placeholder>
+                    <mat-select [(ngModel)]="calcSumAssured" (change)="calculateQuote()">
+                      <mat-option [value]="500000">₹ 5,00,000</mat-option>
+                      <mat-option [value]="1000000">₹ 10,00,000</mat-option>
+                      <mat-option [value]="2500000">₹ 25,00,000</mat-option>
+                      <mat-option [value]="5000000">₹ 50,00,000</mat-option>
+                      <mat-option [value]="10000000">₹ 1,00,00,000</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="50">
+                  <mat-form-field class="w-100">
+                    <mat-placeholder>Tenure</mat-placeholder>
+                    <mat-select [(ngModel)]="calcTermYears" (change)="calculateQuote()">
+                      <mat-option [value]="10">10 Years</mat-option>
+                      <mat-option [value]="15">15 Years</mat-option>
+                      <mat-option [value]="20">20 Years</mat-option>
+                      <mat-option [value]="25">25 Years</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div fxLayout="row" fxLayoutAlign="space-between center">
+                <mat-checkbox [(ngModel)]="calcIsSmoker" (change)="calculateQuote()" color="primary">
+                  Tobacco Consumer (+35% Risk)
+                </mat-checkbox>
+                <button mat-raised-button color="primary" (click)="calculateQuote()" [disabled]="calculating">
+                  <mat-icon>refresh</mat-icon> Quote
+                </button>
+              </div>
+
+              <div class="quote-display-box" *ngIf="calcResult">
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center">
+                  <div>
+                    <div class="quote-caption">ANNUAL PREMIUM (INCL. 18% GST)</div>
+                    <div class="quote-amount">₹ {{ calcResult.grossAnnualPremium | number }} <span class="per-year">/ yr</span></div>
+                  </div>
+                  <div class="quote-chip" [ngClass]="{'chip-low': calcAge <= 35, 'chip-med': calcAge > 35}">
+                    {{ calcResult.riskCategory }}
+                  </div>
+                </div>
+                <div class="breakdown-grid" fxLayout="row" fxLayoutAlign="space-between center">
+                  <div class="grid-item">
+                    <div class="lbl">Monthly</div>
+                    <div class="val">₹ {{ calcResult.monthlyPremium | number }}</div>
+                  </div>
+                  <div class="grid-item">
+                    <div class="lbl">Quarterly</div>
+                    <div class="val">₹ {{ calcResult.quarterlyPremium | number }}</div>
+                  </div>
+                  <div class="grid-item">
+                    <div class="lbl">GST 18%</div>
+                    <div class="val">₹ {{ calcResult.gst18Percent | number }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div fxFlex="50" fxFlex.lt-md="100">
+        <mat-card class="tool-card h-100">
+          <div class="card-header-bar" fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+              <div class="tool-icon bg-orange"><mat-icon>gavel</mat-icon></div>
+              <div>
+                <h2 class="card-heading">Claim Adjudication Workflow</h2>
+                <p class="card-subheading">State machine transitions: SUBMITTED ➔ UNDER_REVIEW ➔ SETTLED</p>
+              </div>
+            </div>
+            <button mat-icon-button (click)="switchView('claims')" matTooltip="Open Full Claims Desk">
+              <mat-icon>open_in_new</mat-icon>
+            </button>
+          </div>
+
+          <mat-card-content class="claim-content">
+            <div class="lifecycle-track" fxLayout="row" fxLayoutAlign="space-between center">
+              <div class="track-step active"><span class="step-num">1</span><span>SUBMITTED</span></div>
+              <div class="track-line"></div>
+              <div class="track-step active"><span class="step-num">2</span><span>UNDER REVIEW</span></div>
+              <div class="track-line"></div>
+              <div class="track-step success"><span class="step-num">3</span><span>SETTLED</span></div>
+              <div class="track-line"></div>
+              <div class="track-step danger"><span class="step-num">✕</span><span>REJECTED</span></div>
+            </div>
+
+            <div class="claim-queue-container">
+              <div class="claim-list" fxLayout="column" fxLayoutGap="10px">
+                <div *ngFor="let p of policies" class="claim-item">
+                  <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+                    <div>
+                      <div class="claim-header" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+                        <strong class="policy-no">{{ p.policyNumber || 'POL-' + p.id }}</strong>
+                        <span class="badge" [ngClass]="getClaimBadgeClass(p.claimStatus)">{{ p.claimStatus || 'NO CLAIM' }}</span>
+                      </div>
+                      <div class="claim-meta">
+                        <span>{{ p.name }}</span> • <span>Claim ID: <code>{{ p.claimNumber || 'None' }}</code></span>
+                      </div>
+                    </div>
+                    <div class="claim-actions" fxLayout="row" fxLayoutGap="6px">
+                      <button mat-stroked-button class="btn-xs btn-review" 
+                              (click)="adjudicateClaim(p, 'UNDER_REVIEW')" 
+                              [disabled]="p.claimStatus === 'UNDER_REVIEW'">
+                        Review
+                      </button>
+                      <button mat-stroked-button class="btn-xs btn-settle" 
+                              (click)="adjudicateClaim(p, 'SETTLED')" 
+                              [disabled]="p.claimStatus === 'SETTLED'">
+                        Settle
+                      </button>
+                      <button mat-stroked-button class="btn-xs btn-reject" 
+                              (click)="adjudicateClaim(p, 'REJECTED')" 
+                              [disabled]="p.claimStatus === 'REJECTED'">
+                        Decline
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+    </div>
+
+    <mat-card class="portfolio-card">
+      <div class="card-header-bar" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <div class="tool-icon bg-green"><mat-icon>security</mat-icon></div>
+          <div>
+            <h2 class="card-heading">Policyholder Portfolio & Certificate Repository</h2>
+            <p class="card-subheading">Generate digitally signed official Policy Bonds (PDF) or export complete audit books</p>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutGap="10px" class="mt-xs-10">
+          <button mat-raised-button color="accent" (click)="downloadCsv()">
+            <mat-icon>cloud_download</mat-icon> Audit CSV
+          </button>
+          <button mat-raised-button color="primary" (click)="navigateToPolicies()">
+            <mat-icon>list</mat-icon> Full Table
+          </button>
+        </div>
+      </div>
+
+      <mat-card-content class="portfolio-content">
+        <div class="table-responsive">
+          <table class="table custom-data-table">
+            <thead>
+              <tr>
+                <th>POLICY ID</th>
+                <th>INSURED HOLDER</th>
+                <th>EMAIL</th>
+                <th>COVERAGE PLAN</th>
+                <th>SUM ASSURED</th>
+                <th>PREMIUM</th>
+                <th>CLAIM STATUS</th>
+                <th>STATUS</th>
+                <th class="text-right">OFFICIAL ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of policies">
+                <td><strong>{{ p.policyNumber || 'POL-' + p.id }}</strong></td>
+                <td>{{ p.name }}</td>
+                <td class="text-muted">{{ p.email }}</td>
+                <td><span class="plan-tag">{{ p.coverageType || 'Term Life Plan' }}</span></td>
+                <td><strong>₹ {{ (p.sumAssured ? (+p.sumAssured).toLocaleString() : '10,00,000') }}</strong></td>
+                <td class="premium-val">₹ {{ (p.premiumAmount ? (+p.premiumAmount).toLocaleString() : '25,000') }}</td>
+                <td>
+                  <span class="badge" [ngClass]="getClaimBadgeClass(p.claimStatus)">{{ p.claimStatus || 'NO CLAIM' }}</span>
+                </td>
+                <td>
+                  <span class="status-pill active-pill">{{ p.status || 'Active' }}</span>
+                </td>
+                <td class="text-right">
+                  <button mat-raised-button class="btn-pdf-download" (click)="downloadPdf(p)" matTooltip="Download Official Signed PDF Policy Bond">
+                    <mat-icon>picture_as_pdf</mat-icon> PDF Bond
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+  </ng-container>
+
+  <ng-container *ngIf="currentView === 'calculator'">
+    <mat-card class="studio-card">
+      <div class="studio-header" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center">
+        <div>
+          <div class="badge-tag">FINTECH ACTUARIAL COMPUTATION ENGINE</div>
+          <h1 class="studio-title">Interactive Actuarial Premium Calculation Studio</h1>
+          <p class="studio-subtitle">
+            Evaluate life assurance underwriting risks, actuarial mortality curves, and generate custom premium quotes across all policy tiers.
+          </p>
+        </div>
+        <button mat-raised-button color="accent" (click)="switchView('overview')">
+          <mat-icon>arrow_back</mat-icon> Back to Dashboard
+        </button>
+      </div>
+
+      <mat-card-content class="studio-body">
+        <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="24px">
+          
+          <div fxFlex="50" fxFlex.lt-md="100" class="panel-box">
+            <h3 class="panel-title"><mat-icon>tune</mat-icon> Actuarial Parameters</h3>
+
+            <div fxLayout="column" fxLayoutGap="18px">
+              <div>
+                <label class="control-label">Applicant Age: <strong>{{ calcAge }} Years</strong></label>
+                <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="start center">
+                  <mat-slider class="flex-1" [(ngModel)]="calcAge" [min]="18" [max]="75" [step]="1" (input)="calculateQuote()"></mat-slider>
+                  <input matInput type="number" [(ngModel)]="calcAge" min="18" max="75" class="num-box" (change)="calculateQuote()">
+                </div>
+              </div>
+
+              <div>
+                <label class="control-label">Plan / Coverage Architecture</label>
+                <mat-form-field class="w-100">
+                  <mat-select [(ngModel)]="calcCoverageType" (change)="calculateQuote()">
+                    <mat-option value="TERM_LIFE">Pure Term Life Protection (1.0x)</mat-option>
+                    <mat-option value="WHOLE_LIFE">Whole Life Comprehensive Cover (1.75x)</mat-option>
+                    <mat-option value="ENDOWMENT">Endowment with Guaranteed Savings (2.2x)</mat-option>
+                    <mat-option value="CRITICAL_ILLNESS">Term Life + Critical Illness Rider (1.4x)</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div>
+                <label class="control-label">Sum Assured (Guaranteed Benefit)</label>
+                <mat-form-field class="w-100">
+                  <mat-select [(ngModel)]="calcSumAssured" (change)="calculateQuote()">
+                    <mat-option [value]="500000">₹ 5,00,000 (5 Lakhs)</mat-option>
+                    <mat-option [value]="1000000">₹ 10,00,000 (10 Lakhs)</mat-option>
+                    <mat-option [value]="2500000">₹ 25,00,000 (25 Lakhs)</mat-option>
+                    <mat-option [value]="5000000">₹ 50,00,000 (50 Lakhs)</mat-option>
+                    <mat-option [value]="10000000">₹ 1,00,00,000 (1 Crore)</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div>
+                <label class="control-label">Policy Tenure Duration</label>
+                <mat-form-field class="w-100">
+                  <mat-select [(ngModel)]="calcTermYears" (change)="calculateQuote()">
+                    <mat-option [value]="10">10 Years</mat-option>
+                    <mat-option [value]="15">15 Years</mat-option>
+                    <mat-option [value]="20">20 Years</mat-option>
+                    <mat-option [value]="25">25 Years</mat-option>
+                    <mat-option [value]="30">30 Years</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="tobacco-box" fxLayout="row" fxLayoutAlign="space-between center">
+                <div>
+                  <strong>Nicotine / Tobacco Consumption</strong>
+                  <div class="subtext">Adds +35% mortality risk weighting to standard baseline</div>
+                </div>
+                <mat-slide-toggle [(ngModel)]="calcIsSmoker" (change)="calculateQuote()" color="primary"></mat-slide-toggle>
+              </div>
+            </div>
+          </div>
+
+          <div fxFlex="50" fxFlex.lt-md="100" class="panel-box bg-quote" *ngIf="calcResult">
+            <h3 class="panel-title text-success"><mat-icon>receipt_long</mat-icon> Live Actuarial Quote</h3>
+
+            <div class="studio-quote-hero">
+              <div class="hero-lbl">ANNUAL PAYABLE PREMIUM (INCL. 18% GST)</div>
+              <div class="hero-amt">₹ {{ calcResult.grossAnnualPremium | number }} <span class="yr-unit">/ year</span></div>
+              <div class="hero-tagline">{{ calcResult.planDescription }} • {{ calcResult.riskCategory }}</div>
+            </div>
+
+            <div class="interval-cards" fxLayout="row" fxLayoutGap="12px">
+              <div fxFlex="33" class="interval-card">
+                <div class="int-lbl">Monthly</div>
+                <div class="int-val">₹ {{ calcResult.monthlyPremium | number }}</div>
+              </div>
+              <div fxFlex="33" class="interval-card">
+                <div class="int-lbl">Quarterly</div>
+                <div class="int-val">₹ {{ calcResult.quarterlyPremium | number }}</div>
+              </div>
+              <div fxFlex="33" class="interval-card">
+                <div class="int-lbl">Semi-Annual</div>
+                <div class="int-val">₹ {{ calcResult.semiAnnualPremium | number }}</div>
+              </div>
+            </div>
+
+            <div class="actuarial-sheet mt-3">
+              <table class="w-100 sheet-table">
+                <tr><td>Sum Assured (Guaranteed Payout)</td><td class="text-right"><strong>₹ {{ (calcSumAssured | number) }}</strong></td></tr>
+                <tr><td>Mortality Rate Index</td><td class="text-right">{{ calcResult.baseMortalityRatePerThousand }} per ₹1,000</td></tr>
+                <tr><td>Base Net Premium</td><td class="text-right">₹ {{ calcResult.netAnnualPremium | number }}</td></tr>
+                <tr><td>Statutory GST (18%)</td><td class="text-right">₹ {{ calcResult.gst18Percent | number }}</td></tr>
+                <tr class="highlight-row"><td><strong>Total Annual Premium</strong></td><td class="text-right text-success"><strong>₹ {{ calcResult.grossAnnualPremium | number }}</strong></td></tr>
+                <tr><td>Est. Maturity Return Value</td><td class="text-right">₹ {{ (calcResult.maturityBenefitEstimate | number) }}</td></tr>
+              </table>
+            </div>
+
+            <div class="mt-3" fxLayout="row" fxLayoutGap="10px">
+              <button mat-raised-button class="btn-primary-custom flex-1" (click)="navigateToPolicies()">
+                <mat-icon>check_circle</mat-icon> Issue Policy with this Quote
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
+
+  <ng-container *ngIf="currentView === 'claims'">
+    <mat-card class="studio-card">
+      <div class="studio-header" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center">
+        <div>
+          <div class="badge-tag">ENTERPRISE CLAIMS ADJUDICATION & STATE MACHINE</div>
+          <h1 class="studio-title">Claims Adjudication & Lifecycle Desk</h1>
+          <p class="studio-subtitle">
+            Manage policy claim transitions with state validation, audit trails, and instant status updates.
+          </p>
+        </div>
+        <button mat-raised-button color="accent" (click)="switchView('overview')">
+          <mat-icon>arrow_back</mat-icon> Back to Dashboard
+        </button>
+      </div>
+
+      <mat-card-content class="studio-body">
+        <div class="claim-filter-bar" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutGap="15px">
+          <div fxFlex="50">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-placeholder>Search by Policy Number, Claim ID, or Policyholder Name</mat-placeholder>
+              <input matInput [(ngModel)]="claimSearchTerm">
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayoutGap="8px">
+            <button mat-button class="filter-pill" [ngClass]="{'active': claimFilterStatus === 'ALL'}" (click)="claimFilterStatus = 'ALL'">ALL</button>
+            <button mat-button class="filter-pill" [ngClass]="{'active': claimFilterStatus === 'SUBMITTED'}" (click)="claimFilterStatus = 'SUBMITTED'">SUBMITTED</button>
+            <button mat-button class="filter-pill" [ngClass]="{'active': claimFilterStatus === 'UNDER_REVIEW'}" (click)="claimFilterStatus = 'UNDER_REVIEW'">UNDER REVIEW</button>
+            <button mat-button class="filter-pill" [ngClass]="{'active': claimFilterStatus === 'SETTLED'}" (click)="claimFilterStatus = 'SETTLED'">SETTLED</button>
+            <button mat-button class="filter-pill" [ngClass]="{'active': claimFilterStatus === 'REJECTED'}" (click)="claimFilterStatus = 'REJECTED'">REJECTED</button>
+          </div>
+        </div>
+
+        <div class="claims-detailed-grid" fxLayout="column" fxLayoutGap="14px">
+          <div *ngFor="let p of filteredClaims" class="claim-detail-card">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center">
+              <div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                  <span class="policy-pill">POLICY: {{ p.policyNumber || 'POL-' + p.id }}</span>
+                  <span class="claim-pill">CLAIM ID: {{ p.claimNumber || 'None' }}</span>
+                  <span class="badge" [ngClass]="getClaimBadgeClass(p.claimStatus)">{{ p.claimStatus || 'NO CLAIM' }}</span>
+                </div>
+                <div class="claim-claimant-info mt-1">
+                  <strong>{{ p.name }}</strong> ({{ p.email }}) • Plan: <span>{{ p.coverageType || 'Term Life' }}</span> • Sum Assured: <strong>₹ {{ p.sumAssured || '10,00,000' }}</strong>
+                </div>
+                <div class="claim-remarks text-muted mt-1" *ngIf="p.claimRemarks">
+                  <em>Audit Note: {{ p.claimRemarks }}</em>
+                </div>
+              </div>
+
+              <div class="action-buttons" fxLayout="row" fxLayoutGap="8px">
+                <button mat-raised-button class="btn-xs btn-review" 
+                        (click)="adjudicateClaim(p, 'UNDER_REVIEW')" 
+                        [disabled]="p.claimStatus === 'UNDER_REVIEW'">
+                  <mat-icon>assignment</mat-icon> Under Review
+                </button>
+                <button mat-raised-button class="btn-xs btn-settle" 
+                        (click)="adjudicateClaim(p, 'SETTLED')" 
+                        [disabled]="p.claimStatus === 'SETTLED'">
+                  <mat-icon>check_circle</mat-icon> Settle & Disburse
+                </button>
+                <button mat-raised-button class="btn-xs btn-reject" 
+                        (click)="adjudicateClaim(p, 'REJECTED')" 
+                        [disabled]="p.claimStatus === 'REJECTED'">
+                  <mat-icon>cancel</mat-icon> Decline
+                </button>
+                <button mat-icon-button (click)="downloadPdf(p)" matTooltip="Download Policy Bond">
+                  <mat-icon>picture_as_pdf</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="filteredClaims.length === 0" class="empty-claims text-center p-4">
+            <mat-icon style="font-size: 40px; color: #94a3b8;">search_off</mat-icon>
+            <div class="mt-2 text-muted">No policy claims matching current search filter.</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
+
+</div>
