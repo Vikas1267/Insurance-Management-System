@@ -1,91 +1,179 @@
 # Insurance Management System
 
-[![Java](https://img.shields.io/badge/Java-21%20LTS-ED8B00?style=flat-square&logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.3+-6DB33F?style=flat-square&logo=spring-boot&logoColor=white)](https://spring.io/projects/spring-boot)
-[![Spring Data JPA](https://img.shields.io/badge/Spring%20Data-JPA%20%2F%20Hibernate-59666C?style=flat-square&logo=hibernate&logoColor=white)](https://hibernate.org/)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0%20%2F%209.5-4479A1?style=flat-square&logo=mysql&logoColor=white)](https://www.mysql.com/)
-[![Angular](https://img.shields.io/badge/Angular-Material%20SPA-DD0031?style=flat-square&logo=angular&logoColor=white)](https://angular.io/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+![Java](https://img.shields.io/badge/Java-21-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=flat-square&logo=spring-boot&logoColor=white)
+![Spring Data JPA](https://img.shields.io/badge/Spring%20Data%20JPA-59666C?style=flat-square&logo=hibernate&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white)
+![Angular](https://img.shields.io/badge/Angular%20Material-DD0031?style=flat-square&logo=angular&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
 
-An enterprise-grade, full-stack Insurance Management System designed to digitize and automate the lifecycle of life and general insurance policies. Built on a clean **Controller-Service-Repository** layered architecture with Spring Boot, Spring Data JPA, Hibernate ORM, MySQL, and an Angular Material SPA frontend.
+A full stack web application for managing insurance policies. You can create and edit policies, calculate premiums for four coverage plans, move claims through a review workflow, and download a policy certificate as a PDF. The server is built with Spring Boot, Spring Data JPA and MySQL, and the user interface is an Angular Material app.
 
----
+## Quick start
 
-## ⚡ Quick Start (Run in 1 Command)
+The Angular app is already compiled and stored in `frontend/dist`, so you do not need Node.js or the Angular CLI to run the project.
 
-The frontend is **pre-compiled and bundled** inside `frontend/dist`, so you do **not** need Node.js or Angular CLI installed to run the application.
+1. Install the tools listed under [Requirements](#requirements).
+2. Create the database (see [Database setup](#database-setup)).
+3. Set your MySQL password in `backend/src/main/resources/application.properties`.
+4. Run the project:
 
 ```bash
 git clone https://github.com/Vikas1267/Insurance-Management-System.git
 cd Insurance-Management-System
 python run.py
 ```
-*(Or if you prefer: `npm start`)*
 
-The script starts both the Spring Boot backend and the frontend server, displays service status, and outputs your access URL:
+`npm start` does the same thing. The script starts the Spring Boot API on port 8082 and the web app on port 4200. Press `Ctrl + C` in the terminal to stop both.
 
-```text
-======================================================================
-                 INSURANCE MANAGEMENT SYSTEM
-======================================================================
-[*] Starting Spring Boot REST Backend (port 8082)...
-[*] Starting Angular Frontend Portal (port 4200)...
-[*] Verifying services readiness...
+Open <http://localhost:4200> and sign in with the demo account:
 
-======================================================================
- [SUCCESS] Insurance Management System is actively running!
-======================================================================
+| Field | Value |
+| :--- | :--- |
+| Email | `indlavikas57@gmail.com` |
+| Password | `12345678` |
 
-  * Frontend Portal : http://localhost:4200
-  * Backend REST API: http://localhost:8082
+This account comes from the sample data in `database/schema.sql` and is meant for local use only.
 
-  👉 Open this URL in your browser:
-     http://localhost:4200
+## What you can try
 
-     Login Email:    indlavikas57@gmail.com
-     Login Password: 12345678
-======================================================================
+After you sign in, these are good places to start:
+
+- **Policies:** add, edit, view and delete policies on the portfolio page.
+- **Premium calculator:** enter an age, sum assured, term in years, coverage plan and smoker status, then compare the annual and monthly premium across plans.
+- **Claims:** open a sample claim (`CLM-502`, `CLM-104` or `CLM-311`) and move it through review, settlement or rejection.
+- **Policy certificate:** download any policy as a PDF.
+- **CSV export:** download all policies as a CSV file.
+- **Dashboard:** see totals for policies, sum assured, premium income and settlement ratio.
+
+## Screenshots
+
+### Dashboard
+
+![Dashboard with portfolio totals, premium calculator and claim workflow](<img width="1920" height="1080" alt="Screenshot 2026-11-27 100837" src="https://github.com/user-attachments/assets/599cc968-d2b5-464d-be7e-d197212bfe09" />
+)
+
+*Portfolio totals, the premium calculator and the claim workflow on one page. The figures come from the sample policies in `schema.sql`.*
+
+### Policy list
+
+![Policy list with search, add, edit, delete and PDF download](<img width="1920" height="1080" alt="Screenshot 2026-11-27 100853" src="https://github.com/user-attachments/assets/b1871167-71b9-43c6-99d1-da801e71ceca" />
+)
+
+*Search, add, edit and delete policies, and download a policy PDF from each row.*
+
+### Policy portfolio and certificates
+
+![Policy portfolio table with coverage plan, claim status and PDF download](<img width="1920" height="1080" alt="Screenshot 2026-11-27 100915" src="https://github.com/user-attachments/assets/079b1f83-e611-460a-8aa2-c9ea04aad0df" />
+)
+
+*Each policy shows its coverage plan, sum assured, premium and claim status, with a button for the PDF certificate and a CSV export.*
+
+### Premium calculator
+
+![Premium calculator with age, plan, sum assured, term and smoker options](<img width="1920" height="1080" alt="Screenshot 2026-11-27 100954" src="https://github.com/user-attachments/assets/23efdeb9-3ecb-4557-be08-979b2684ef63" />
+)
+
+*Enter an age, plan, sum assured, term and smoker status to get the annual premium and the semi-annual, quarterly and monthly amounts.*
+
+### Claims workflow
+
+![Claims page with status filters and review, settle and decline actions](<img width="1920" height="1080" alt="Screenshot 2026-11-27 101010" src="https://github.com/user-attachments/assets/7103de82-feda-48cf-a3c7-fe3b181558a9" />
+)
+
+*Filter claims by status and move each one to review, settlement or rejection.*
+
+### Database
+
+![Policy and claim records in MySQL Workbench](docs/mysql_database_verification.jpg)
+
+*Policy and claim records in MySQL Workbench, showing claim numbers and the `UNDER_REVIEW`, `SETTLED` and `REJECTED` states.*
+
+## Features
+
+**Premium calculation.** The annual and monthly premium depends on the applicant's age, the policy term, whether the applicant smokes, and a mortality rate table. Each coverage plan applies its own multiplier to the base premium. The calculator shows the annual premium and the semi-annual, quarterly and monthly amounts:
+
+| Coverage plan | Multiplier |
+| :--- | :--- |
+| Pure Term Life Assurance | 1.0x |
+| Whole Life Comprehensive Protection | 1.75x |
+| Endowment with Guaranteed Savings | 2.2x |
+| Term Life with Critical Illness Rider | 1.4x |
+
+**Claim workflow.** A claim moves from `SUBMITTED` to `UNDER_REVIEW`, and then to `SETTLED` or `REJECTED`. Each decision carries a remark that is saved with the claim.
+
+**PDF policy certificate.** `GET /policy/export/pdf/{id}` builds a certificate with OpenPDF. It contains the policy schedule, the coverage benefits, a disclaimer and a signature block.
+
+**CSV export.** `GET /policy/export/csv` returns every policy as a CSV file.
+
+**Data model.** Users, employees, addresses (`@OneToMany`) and policies are stored with Spring Data JPA and Hibernate.
+
+## Architecture
+
+The server follows a Controller, Service, Repository layout.
+
+```mermaid
+graph TD
+    subgraph Browser
+        A["Angular Material app<br/>port 4200"]
+    end
+
+    subgraph Spring Boot API
+        B["Controllers<br/>Policy, User, Login, Employee<br/>port 8082"]
+        C["Services<br/>Policy, User, Employee"]
+        D["ActuarialCalculatorService<br/>mortality table and plan multipliers"]
+        E["PolicyPdfService<br/>OpenPDF certificate"]
+        F["Spring Data JPA repositories<br/>Hibernate"]
+    end
+
+    G[("MySQL<br/>database: project")]
+
+    A -->|HTTP and JSON| B
+    B --> C
+    C --> D
+    C --> E
+    C --> F
+    F --> G
 ```
 
-Open **`http://localhost:4200`** in your browser, log in with the credentials above, and explore the portal!  
-*(To stop all services anytime, press `Ctrl + C` in the terminal).*
+## Tech stack
 
----
+| Area | Technology |
+| :--- | :--- |
+| API | Java 21, Spring Boot (exact version in `backend/pom.xml`) |
+| Persistence | Spring Data JPA, Hibernate |
+| Database | MySQL 8.0 or later |
+| PDF | OpenPDF |
+| Web app | Angular, Angular Material, TypeScript, SCSS |
+| Tests | JUnit, Mockito |
+| Build and run | Maven, Python runner script (`run.py`) |
 
-## 📋 Prerequisites & Environment Setup
+## Requirements
 
-Before running the application, make sure your computer has:
-
-| Requirement | Supported Versions | Purpose |
+| Tool | Version | Used for |
 | :--- | :--- | :--- |
-| **Java (JDK)** | Java 8, 11, 17, or 21 LTS | Runs the Spring Boot backend |
-| **Maven** | 3.6+ *(or use bundled `mvnw`)* | Backend build & dependency management |
-| **MySQL** | MySQL 8.0, 8.4 LTS, or 9.x | Relational persistence |
-| **Python** | Python 3.8+ | 1-command platform runner & SPA server |
-| **Node.js** *(Optional)* | Node 16+ *(only if modifying frontend)* | Building frontend source code |
+| Java (JDK) | 21 (8, 11 and 17 also work) | Spring Boot API |
+| Maven | 3.6 or later, or the bundled `mvnw` | Building the API |
+| MySQL | 8.0, 8.4 or 9.x | Database |
+| Python | 3.8 or later | `run.py` and the web server |
+| Node.js | 16 or later, only to change the Angular source | Rebuilding `frontend/dist` |
 
----
+## Database setup
 
-## 🗄️ Database Setup & Configuration
-
-The project includes a ready-to-run schema and seed data file at `database/schema.sql`.
-
-### 1. Create Database & Seed Tables
-Open MySQL Workbench, phpMyAdmin, or your terminal and execute:
+The file `database/schema.sql` creates the schema and the sample data.
 
 ```bash
 mysql -u root -p < database/schema.sql
 ```
-*(Or open `database/schema.sql` in MySQL Workbench and click **Execute**).*
 
-This script:
-- Creates the `project` database (`CREATE DATABASE IF NOT EXISTS project`).
-- Creates all relational tables: `policy`, `user`, `emps`, `emps_address`, and `address`.
-- Seeds **5 realistic insurance policies** with active claims (`CLM-502`, `CLM-104`, `CLM-311`, etc.).
-- Seeds default user accounts (including `indlavikas57@gmail.com` with password `12345678`).
+You can also open the file in MySQL Workbench and run it there. The script:
 
-### 2. Configure Database Credentials
-Open `backend/src/main/resources/application.properties` and verify your local MySQL credentials:
+- creates the `project` database,
+- creates the tables `policy`, `user`, `emps`, `emps_address` and `address`,
+- adds five sample policies with claims (`CLM-502`, `CLM-104`, `CLM-311` and others),
+- adds the demo user account shown in [Quick start](#quick-start).
+
+Then open `backend/src/main/resources/application.properties` and set your own MySQL password:
 
 ```properties
 server.port=8082
@@ -100,161 +188,82 @@ spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
 ```
 
-> **Note:** If your MySQL server runs on a different port (e.g. `3307`), update the port in `spring.datasource.url`.
+If MySQL runs on another port, such as 3307, change the port in `spring.datasource.url`.
 
----
+## API reference
 
-## 📸 Live System Verification & Proof of Work
-
-### 1. Executive Policy Administration & Actuarial Command Center
-![Insurance Management System Executive Dashboard](docs/live_executive_dashboard.jpg)
-*Real-time executive dashboard featuring portfolio KPI cards (₹130.0 Lakhs sum assured, ₹111.2k premium inflow, 98.6% settlement ratio), interactive Actuarial Premium Calculator, and the Claim Adjudication Workflow pipeline.*
-
-### 2. MySQL Enterprise Database Schema & State Verification
-![MySQL Database Records & Claim Schema Verification](docs/mysql_database_verification.jpg)
-*Relational database records verified in MySQL Workbench: showing active policies, claim reference numbers (`CLM-502`, `CLM-104`, `CLM-311`), coverage plans, and adjudicated claim states (`UNDER_REVIEW`, `SETTLED`, `REJECTED`).*
-
----
-
-## 📌 Key System Features
-
-1. **Executive Portfolio Monitoring:** Live KPI tracking of in-force policies, sum assured liability reserves, and annual premium cash inflows.
-2. **Actuarial Premium Calculation Engine:** Computes risk-adjusted annual and monthly premiums based on mortality rate tables, applicant age, policy tenure, and smoker risk loading across 4 coverage plans:
-   - *Pure Term Life Assurance* (1.0x baseline)
-   - *Whole Life Comprehensive Protection* (1.75x)
-   - *Endowment with Guaranteed Savings* (2.2x)
-   - *Term Life with Critical Illness Rider* (1.4x)
-3. **Claim Adjudication Workflow & State Machine:** Enforces formal lifecycle transitions for insurance claims:
-   ```text
-   SUBMITTED  ──►  UNDER REVIEW  ──►  SETTLED  (or REJECTED)
-   ```
-   Underwriters can review, settle, or decline claims with timestamped audit notes directly from the portal.
-4. **Dynamic PDF Policy Bond Generator:** On-demand generation of official, digitally signed Policy Certificate Bonds (`GET /policy/export/pdf/{id}`) featuring policy schedules, coverage benefits, statutory disclaimers, and authorized digital signature blocks using OpenPDF.
-5. **Regulatory CSV Audit Export:** Streams complete policyholder audit books as downloadable CSV files on demand (`GET /policy/export/csv`).
-6. **Multi-Entity Relational Data Modeling:** JPA relational persistence handling Users, Employees, Addresses (`@OneToMany`), and Policy Lifecycles.
-
----
-
-## 🏛️ System Architecture
-
-```mermaid
-graph TD
-    subgraph Client Layer
-        A[Angular SPA - Material UI\nPort: 4200]
-        A1[Executive Dashboard]
-        A2[Actuarial Calculator]
-        A3[Claims Workflow]
-        A4[Policy Portfolio CRUD]
-        A --> A1
-        A --> A2
-        A --> A3
-        A --> A4
-    end
-
-    subgraph Backend & API Layer
-        B[Spring Boot REST Controllers\nPolicyController | UserController | LoginController\nPort: 8082]
-    end
-
-    subgraph Service & Business Layer
-        D[PolicyService | UserService | EmployeeService]
-        E[ActuarialCalculatorService\nMortality Tables & Risk Multipliers]
-        F[PolicyPdfService\nOpenPDF Digital Bond Engine]
-    end
-
-    subgraph Persistence Layer
-        G[Spring Data JPA Repositories\nPolicyRepository | UserRepository]
-        H[Hibernate ORM Engine]
-    end
-
-    subgraph Database Layer
-        I[(MySQL Relational Database\nDatabase: 'project' | Port: 3306)]
-    end
-
-    A -->|HTTP REST / JSON| B
-    B --> D
-    D --> E
-    D --> F
-    D --> G
-    G --> H
-    H --> I
-```
-
----
-
-## 🛠️ Tech Stack & Tools
-
-| Component | Technology | Description |
-| :--- | :--- | :--- |
-| **Backend Framework** | Java 21 LTS / Spring Boot 2.3+ | Layered REST API backend |
-| **ORM & Persistence** | Spring Data JPA / Hibernate | Object-Relational Mapping & automated schema evolution |
-| **PDF Generation Engine**| OpenPDF (LibrePDF 1.3+) | Dynamic generation of official Policy Bond certificates |
-| **Database** | MySQL 8.0+ / 9.5 | Relational database storage |
-| **Frontend Framework** | Angular & Angular Material | Component-driven reactive UI with Material Design controls |
-| **Styling & Layout** | SCSS / Angular Flex-Layout | Responsive layout engine and executive dashboard theming |
-| **Testing** | JUnit & Mockito | Automated unit tests for backend services |
-| **Build & Tooling** | Maven & Python Runner | Automated single-command startup and dependency resolution |
-
----
-
-## 📡 RESTful API Documentation
-
-| Method | Endpoint | Description | Request Body / Params |
+| Method | Endpoint | Description | Body or parameters |
 | :--- | :--- | :--- | :--- |
-| `POST` | `/login` | Authenticate user account | `{"username": "...", "userpwd": "..."}` |
-| `GET` | `/policy/getAll` | Fetch all registered policies | None |
-| `POST` | `/policy/save` | Create or update an insurance policy | `Policy` JSON payload |
-| `GET` | `/policy/get/{id}` | Retrieve policy details by ID | Path variable: `id` |
-| `DELETE` | `/policy/delete/{id}` | Delete policy record by ID | Path variable: `id` |
-| `GET` | `/policy/export/pdf/{id}` | **Dynamic PDF Policy Bond Certificate** | Path variable: `id` (returns `application/pdf`) |
-| `POST` | `/policy/calculate-premium` | **Actuarial Risk & Premium Engine** | `{ age, sumAssured, termYears, coverageType, isSmoker }` |
-| `POST` | `/policy/claim/adjudicate` | **Claim Lifecycle State Machine** | `{ policyId, claimStatus, claimRemarks }` |
-| `GET` | `/policy/dashboard/metrics` | **Portfolio KPI Analytics** | Returns aggregate counts, reserves & settlement ratios |
-| `GET` | `/policy/export/csv` | Export all policies as CSV | None (returns `text/csv`) |
-| `POST` | `/user/save` | Register a new user profile | `User` JSON payload |
-| `GET` | `/user/getcity/{city}` | Filter users by city | Path variable: `city` |
-| `POST` | `/employee/saveEmpAdd`| Save employee with mapped addresses | `Employee` JSON payload |
+| `POST` | `/login` | Sign in | `{"username": "...", "userpwd": "..."}` |
+| `GET` | `/policy/getAll` | List all policies | none |
+| `POST` | `/policy/save` | Create or update a policy | `Policy` JSON |
+| `GET` | `/policy/get/{id}` | Get one policy | path variable `id` |
+| `DELETE` | `/policy/delete/{id}` | Delete a policy | path variable `id` |
+| `GET` | `/policy/export/pdf/{id}` | Download the policy certificate (PDF) | path variable `id` |
+| `POST` | `/policy/calculate-premium` | Calculate a premium | `{ age, sumAssured, termYears, coverageType, isSmoker }` |
+| `POST` | `/policy/claim/adjudicate` | Update the status of a claim | `{ policyId, claimStatus, claimRemarks }` |
+| `GET` | `/policy/dashboard/metrics` | Dashboard totals and settlement ratio | none |
+| `GET` | `/policy/export/csv` | Download all policies as CSV | none |
+| `POST` | `/user/save` | Register a user | `User` JSON |
+| `GET` | `/user/getcity/{city}` | List users in a city | path variable `city` |
+| `POST` | `/employee/saveEmpAdd` | Save an employee with addresses | `Employee` JSON |
 
----
+## Run the parts separately
 
-## ⚙️ Manual Step-by-Step Setup (Alternative)
+Use this if you prefer two terminals instead of `python run.py`.
 
-If you prefer running each service in separate terminals instead of `python run.py`:
+Start the API (runs at <http://localhost:8082>):
 
-### 1. Start Backend REST API
 ```bash
 cd backend
 mvn spring-boot:run
 ```
-*Backend runs at `http://localhost:8082`.*
 
-### 2. Start Frontend UI
+Start the web app (runs at <http://localhost:4200>):
+
 ```bash
 cd frontend
 python serve_spa.py
 ```
-*Frontend runs at `http://localhost:4200`.*
 
-### 3. Rebuilding Frontend from Source *(Optional)*
-If you make changes to the Angular source code in `frontend/src/`:
+## Run the tests
+
+```bash
+cd backend
+mvn test
+```
+
+## Rebuild the Angular app
+
+Only needed if you change the code in `frontend/src/`.
+
 ```bash
 cd frontend
 npm install
 npm run build
 ```
-*(On Node 17+, run `$env:NODE_OPTIONS="--openssl-legacy-provider"; npm run build` on PowerShell or `export NODE_OPTIONS="--openssl-legacy-provider" && npm run build` on Linux/macOS).*
 
----
+On Node 17 or later, set the legacy OpenSSL option first. In PowerShell:
 
-## 👨‍💻 Author & Developer
+```powershell
+$env:NODE_OPTIONS="--openssl-legacy-provider"; npm run build
+```
 
-**Omvikas Indla**  
-*Java Full Stack Developer*  
-- **Email:** [indlavikas57@gmail.com](mailto:indlavikas57@gmail.com)  
-- **Education:** B.Tech in Computer Science, DY Patil University, Pune  
-- **GitHub:** [github.com/Vikas1267](https://github.com/Vikas1267)
+On Linux or macOS:
 
----
+```bash
+export NODE_OPTIONS="--openssl-legacy-provider" && npm run build
+```
 
-## 📄 License
+## Author
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+**Omvikas Indla**, Java Full Stack Developer
+
+B.Tech in Computer Science, DY Patil University, Pune
+
+- Email: [indlavikas57@gmail.com](mailto:indlavikas57@gmail.com)
+- GitHub: [github.com/Vikas1267](https://github.com/Vikas1267)
+
+## License
+
+Released under the MIT License. See the [LICENSE](LICENSE) file.
