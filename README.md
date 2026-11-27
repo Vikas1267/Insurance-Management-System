@@ -50,42 +50,39 @@ After you sign in, these are good places to start:
 
 ### Dashboard
 
-![Dashboard with portfolio totals, premium calculator and claim workflow](<img width="1920" height="1080" alt="Screenshot 2026-11-27 100837" src="https://github.com/user-attachments/assets/599cc968-d2b5-464d-be7e-d197212bfe09" />
-)
+![Dashboard with portfolio totals, premium calculator and claim workflow]<img width="1920" height="1080" alt="Screenshot 2026-11-27 100837" src="https://github.com/user-attachments/assets/599cc968-d2b5-464d-be7e-d197212bfe09" />
+
 
 *Portfolio totals, the premium calculator and the claim workflow on one page. The figures come from the sample policies in `schema.sql`.*
 
 ### Policy list
 
-![Policy list with search, add, edit, delete and PDF download](<img width="1920" height="1080" alt="Screenshot 2026-11-27 100853" src="https://github.com/user-attachments/assets/b1871167-71b9-43c6-99d1-da801e71ceca" />
-)
+![Policy list with search, add, edit, delete and PDF download]<img width="1920" height="1080" alt="Screenshot 2026-11-27 100853" src="https://github.com/user-attachments/assets/b1871167-71b9-43c6-99d1-da801e71ceca" />
 
 *Search, add, edit and delete policies, and download a policy PDF from each row.*
 
 ### Policy portfolio and certificates
 
-![Policy portfolio table with coverage plan, claim status and PDF download](<img width="1920" height="1080" alt="Screenshot 2026-11-27 100915" src="https://github.com/user-attachments/assets/079b1f83-e611-460a-8aa2-c9ea04aad0df" />
-)
+![Policy portfolio table with coverage plan, claim status and PDF download]<img width="1920" height="1080" alt="Screenshot 2026-11-27 100915" src="https://github.com/user-attachments/assets/079b1f83-e611-460a-8aa2-c9ea04aad0df" />
 
 *Each policy shows its coverage plan, sum assured, premium and claim status, with a button for the PDF certificate and a CSV export.*
 
 ### Premium calculator
 
-![Premium calculator with age, plan, sum assured, term and smoker options](<img width="1920" height="1080" alt="Screenshot 2026-11-27 100954" src="https://github.com/user-attachments/assets/23efdeb9-3ecb-4557-be08-979b2684ef63" />
-)
+![Premium calculator with age, plan, sum assured, term and smoker options]<img width="1920" height="1080" alt="Screenshot 2026-11-27 100954" src="https://github.com/user-attachments/assets/23efdeb9-3ecb-4557-be08-979b2684ef63" />
 
 *Enter an age, plan, sum assured, term and smoker status to get the annual premium and the semi-annual, quarterly and monthly amounts.*
 
 ### Claims workflow
 
-![Claims page with status filters and review, settle and decline actions](<img width="1920" height="1080" alt="Screenshot 2026-11-27 101010" src="https://github.com/user-attachments/assets/7103de82-feda-48cf-a3c7-fe3b181558a9" />
-)
+![Claims page with status filters and review, settle and decline actions]<img width="1920" height="1080" alt="Screenshot 2026-11-27 101010" src="https://github.com/user-attachments/assets/7103de82-feda-48cf-a3c7-fe3b181558a9" />
 
 *Filter claims by status and move each one to review, settlement or rejection.*
 
 ### Database
 
-![Policy and claim records in MySQL Workbench](docs/mysql_database_verification.jpg)
+![Policy and claim records in MySQL Workbench]<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/8ac6aebb-d812-48ec-ac91-31239c1b1d52" />
+
 
 *Policy and claim records in MySQL Workbench, showing claim numbers and the `UNDER_REVIEW`, `SETTLED` and `REJECTED` states.*
 
